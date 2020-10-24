@@ -29,9 +29,14 @@ public class SprintBootSampleApplication {
             TypeReference<List<Candidate>> typeReference = new TypeReference<List<Candidate>>(){};
             InputStream inputStream = TypeReference.class.getResourceAsStream("/data/candidates.json");
             try {
-                List<Candidate> candidates = mapper.readValue(inputStream,typeReference);
-                candidatesDao.saveAll(candidates);
-                System.out.println("Candidates saved!");
+                var candidateInDb = candidatesDao.findAll();
+                if(candidateInDb.size() > 0) {
+                    System.out.println("Candidates already in database!");
+                }else {
+                    List<Candidate> candidates = mapper.readValue(inputStream, typeReference);
+                    candidatesDao.saveAll(candidates);
+                    System.out.println("Candidates saved!");
+                }
             } catch (IOException e){
                 System.out.println("Unable to save candidates: " + e.getMessage());
             }
