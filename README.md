@@ -1,2 +1,3 @@
-# training
-Sample applications and POCs for training
+# POCs
+
+Sample applications and POCs
