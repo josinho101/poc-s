@@ -6,9 +6,11 @@ import ColorPalette from "./colorpalette";
 const App = () => {
   let colors: Color[] = JSON.parse(JSON.stringify(json));
 
+  const onColorPaletteClicked = (id: string) => {};
+
   const getColorPalettes = () => {
     return colors.map((color, index) => {
-      return <ColorPalette data={color.data} id={color.id} />;
+      return <ColorPalette color={color} onClick={onColorPaletteClicked} />;
     });
   };
 
