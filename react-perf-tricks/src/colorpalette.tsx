@@ -3,11 +3,11 @@ import React, { useState } from "react";
 
 interface Props {
   color: Color;
-  onClick: (id: string) => void;
+  onClose: (id: string) => void;
 }
 
 const ColorPalette: React.FunctionComponent<Props> = (props) => {
-  const { color, onClick } = props;
+  const { color, onClose } = props;
   const [classList, setCssClass] = useState("close hide");
   const style: React.CSSProperties = { backgroundColor: color.data };
 
@@ -30,7 +30,7 @@ const ColorPalette: React.FunctionComponent<Props> = (props) => {
       {color.data}
       <span
         onClick={() => {
-          onClick(color.id);
+          onClose(color.id);
         }}
         className={classList}
         title="Close"
