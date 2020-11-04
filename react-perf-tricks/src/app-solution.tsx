@@ -17,28 +17,17 @@ const App = () => {
     return colors;
   };
 
-  const onColorPaletteCloseClick = (id: string) => {
-    const color = colors.filter(
-      (i) => i.id === id && i.status === enums.status.active
-    )[0];
-
-    if (color) {
-      color.status = enums.status.deleted;
-      const newColors = colors.filter((i) => i.status === enums.status.active);
-      setColors(newColors);
-    }
-  };
+  // useCallback to get a memoized version of callback
+  const handleClose = useCallback((id: string) => {
+    setColors((c) => c.filter((i) => i.id !== id));
+  }, []);
 
   const getColorPalettes = () => {
     return colors.map((color, index) => {
       // Adding key that won't change will help you improve preformance
       // by not rendering unwanted items in a list of components
       return (
-        <ColorPalette
-          key={color.id}
-          color={color}
-          onClose={onColorPaletteCloseClick}
-        />
+        <ColorPalette key={color.id} color={color} onClose={handleClose} />
       );
     });
   };
