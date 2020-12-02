@@ -2,6 +2,13 @@
   "name": "electron-app",
   "version": "0.1.0",
   "private": true,
+  "description": "your project description",
+  "author": "Joseph",
+  "build": {
+    "appId": "com.electron-app"
+  },
+  "main": "public/electron.js",
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
@@ -19,10 +26,12 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "ebuild": "npm run build && node_modules/.bin/build"
   },
   "eslintConfig": {
     "extends": [
