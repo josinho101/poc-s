@@ -2,12 +2,22 @@
   "name": "electron-app",
   "version": "0.1.0",
   "private": true,
-  "description": "your project description",
+  "description": "Sample electron app with React JS",
   "author": "Joseph",
   "build": {
-    "appId": "com.electron-app"
+    "appId": "com.electron-app",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "electron-react-example",
+      "owner": "Joseph"
+    }
   },
-  "main": "public/electron.js",
+  "productName": "Electron Create React App",
+  "main": "electron/main.js",
   "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
@@ -19,6 +29,7 @@
     "@types/react-dom": "^16.9.10",
     "cross-env": "^7.0.2",
     "electron-is-dev": "^1.2.0",
+    "getmac": "^5.17.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -26,12 +37,15 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "ebuild": "npm run build && node_modules/.bin/build"
+    "electron-web-start-dev": "set BROWSER=none && react-scripts start",
+    "electron-app-start-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "electron-build": "mkdir build/electron & robocopy electron/ build/electron /S",
+    "electron-pack-win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "electron-pack-mac": "electron-builder build --mac -c.extraMetadata.main=build/electron/main.js --publish never"
   },
   "eslintConfig": {
     "extends": [

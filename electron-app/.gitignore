@@ -5,12 +5,16 @@ e-app/node_modules
 /node_modules
 /.pnp
 .pnp.js
+.eslintcache
 
 # testing
 /coverage
 
 # production
 /build
+
+#dist
+/dist
 
 # misc
 .DS_Store
@@ -22,3 +26,5 @@ e-app/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
