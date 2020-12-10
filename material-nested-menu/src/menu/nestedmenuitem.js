@@ -13,13 +13,11 @@ const useMenuItemStyles = makeStyles((theme) => ({
 const NestedMenuItem = React.forwardRef(function NestedMenuItem(props, ref) {
   const {
     parentMenuOpen,
-    component = "div",
     label,
     rightIcon = props.arrowIcon,
     children,
     className,
     tabIndex: tabIndexProp,
-    MenuProps = {},
     ContainerProps: ContainerPropsProp = {},
     ...MenuItemProps
   } = props;
@@ -58,6 +56,22 @@ const NestedMenuItem = React.forwardRef(function NestedMenuItem(props, ref) {
     tabIndex = tabIndexProp !== undefined ? tabIndexProp : -1;
   }
 
+  const getOffset = (el) => {
+    if (el && el.current) {
+      const element = el.current;
+      const rect = element.getBoundingClientRect();
+      const { scrollX, scrollY } = window;
+      const { offsetWidth, offsetHeight, clientHeight } = element;
+
+      return {
+        left: rect.left + scrollX + offsetWidth,
+        top: rect.top + scrollY + offsetHeight - clientHeight - 8,
+      };
+    }
+
+    return { top: 0, left: 0 };
+  };
+
   return (
     <div
       {...ContainerProps}
@@ -75,16 +89,11 @@ const NestedMenuItem = React.forwardRef(function NestedMenuItem(props, ref) {
         {rightIcon}
       </MenuItem>
       <Menu
-        style={{ pointerEvents: "none" }}
-        anchorEl={menuItemRef.current}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+        style={{
+          pointerEvents: "none",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
+        anchorReference={"anchorPosition"}
+        anchorPosition={getOffset(menuItemRef)}
         open={open}
         autoFocus={false}
         disableAutoFocus

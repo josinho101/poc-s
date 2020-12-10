@@ -19,6 +19,9 @@ export const Menu = (props) => {
 
   const handleItemClick = (event) => {
     setMenuPosition(null);
+    if (props.handleItemClick) {
+      props.handleItemClick(event);
+    }
   };
 
   const renderMenuItems = (items, itemClickHandler) => {

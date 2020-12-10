@@ -21,9 +21,12 @@ const items = [
       },
     ],
   },
-  { label: "Menu 4" },
   {
-    label: "Menu 5",
+    label: "Menu 4",
+    children: [{ label: "Menu 4.1" }, { label: "Menu 4.2" }],
+  },
+  {
+    label: "Menu 5 very long item",
     children: [
       {
         label: "Menu 5.1",
@@ -33,28 +36,47 @@ const items = [
       { label: "Menu 5.3" },
       {
         label: "Menu 5.4 long item",
-        children: [{ label: "Menu 5.4.1" }, { label: "Menu 5.4.3" }],
+        children: [
+          {
+            label: "Menu 5.4.1",
+            children: [
+              { label: "Menu 5.4.1.1" },
+              { label: "Menu 5.4.1.2" },
+              { label: "Menu 5.4.1.3" },
+            ],
+          },
+          { label: "Menu 5.4.2" },
+        ],
       },
     ],
   },
 ];
 
-function App() {
+const App = () => {
+  const handleMenuItemClick = (e) => {
+    console.log("Menu item clicked");
+  };
+
   return (
     <div>
       <Menu
         items={items}
+        handleItemClick={handleMenuItemClick}
         anchorEl={
           <Button color="primary" variant="contained">
             Show menu
           </Button>
         }
         arrowIcon={
-          <ArrowForwardIosIcon style={{ fontSize: 18, marginLeft: "20px" }} />
+          <span style={{ width: "100%", textAlign: "right" }}>
+            <ArrowForwardIosIcon
+              style={{ fontSize: 18, marginLeft: "20px", marginTop: "4px" }}
+            />
+          </span>
         }
       />
     </div>
   );
-}
+};
 
 export default App;
