@@ -2,6 +2,7 @@ import React from "react";
 import Menu from "./menu";
 import Button from "@material-ui/core/Button";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import Checkbox from "./checkbox";
 
 const items = [
   { label: "Menu 1" },
@@ -60,22 +61,33 @@ const App = () => {
 
   return (
     <div>
-      <Menu
-        items={items}
-        handleItemClick={handleMenuItemClick}
-        anchorEl={
-          <Button color="primary" variant="contained">
-            Show menu
-          </Button>
-        }
-        arrowIcon={
-          <span style={{ width: "100%", textAlign: "right" }}>
-            <ArrowForwardIosIcon
-              style={{ fontSize: 18, marginLeft: "20px", marginTop: "4px" }}
-            />
-          </span>
-        }
-      />
+      <div>
+        <h2>Material UI custom components</h2>
+      </div>
+      <div>
+        <h3>Nested menu</h3>
+        <Menu
+          items={items}
+          handleItemClick={handleMenuItemClick}
+          anchorEl={
+            <Button color="primary" variant="contained">
+              Show menu
+            </Button>
+          }
+          arrowIcon={
+            <span style={{ width: "100%", textAlign: "right" }}>
+              <ArrowForwardIosIcon
+                style={{ fontSize: 18, marginLeft: "20px", marginTop: "4px" }}
+              />
+            </span>
+          }
+        />
+      </div>
+      <div>
+        <h3>Checkbox</h3>
+        Default :<Checkbox />
+        Checked :<Checkbox defaultChecked />
+      </div>
     </div>
   );
 };
