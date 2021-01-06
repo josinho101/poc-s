@@ -1,0 +1,10 @@
+{
+  "home": {
+    "app-title": "i18n React App",
+    "title1": "What is react?",
+    "content11": "React is an open-source, front end, JavaScript library for building user interfaces or UI components. It is maintained by Facebook and a community of individual developers and companies. React can be used as a base in the development of single-page or mobile applications.",
+    "title2": "What is react-i18next?",
+    "content21": "react-i18next is a powerful internationalization framework for React / React Native which is based on i18next. The module provides multiple components eg. to assert that needed translations get loaded or that your content gets rendered when the language changes.",
+    "content22": "react-i18next is optimally suited for server-side rendering. It provides extra extension point to work with next.js. As react-i18next depends on i18next you can use it in any other UI framework and on the server-side (node.js, .net, ...) too."
+  }
+}
