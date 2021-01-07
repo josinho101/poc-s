@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { NotesProvider } from "./stores/NotesContext";
+import { StoreProvider } from "./stores/StoreContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <NotesProvider>
+    <StoreProvider>
       <App />
-    </NotesProvider>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

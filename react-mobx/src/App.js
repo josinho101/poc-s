@@ -1,23 +1,33 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { NewNotesForm } from "./components/NewNotesForm";
-import { useNotesStore } from "./stores/NotesContext";
+import { useStore } from "./stores/StoreContext";
 import { useObserver } from "mobx-react";
-import { toJS } from "mobx";
 
 const App = () => {
-  const notesStore = useNotesStore();
-  const notes = toJS(notesStore.notes);
+  const { notesStore } = useStore();
+  const { usersStore } = useStore();
+
+  useEffect(() => {
+    usersStore.getUsers();
+  }, []);
 
   return useObserver(() => (
-    <React.Fragment>
-      <ui>
+    <div style={{ margin: "10px" }}>
+      <h3>Notes</h3>
+      <NewNotesForm />
+      <ul>
         {notesStore.notes.map((note) => (
           <li>{note.text}</li>
         ))}
-      </ui>
-      <NewNotesForm />
-    </React.Fragment>
+      </ul>
+      <h3>Users</h3>
+      <ul>
+        {usersStore.users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </div>
   ));
 };
 

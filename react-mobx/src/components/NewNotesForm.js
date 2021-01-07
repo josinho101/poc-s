@@ -1,9 +1,9 @@
 import React from "react";
-import { useNotesStore } from "../stores/NotesContext";
+import { useStore } from "../stores/StoreContext";
 
 export const NewNotesForm = () => {
   const [noteText, setNoteText] = React.useState("");
-  const notesStore = useNotesStore();
+  const { notesStore } = useStore();
 
   return (
     <React.Fragment>
@@ -17,9 +17,10 @@ export const NewNotesForm = () => {
       <button
         onClick={() => {
           notesStore.addNote(noteText);
+          setNoteText("");
         }}
       >
-        Submit
+        Add note
       </button>
     </React.Fragment>
   );
