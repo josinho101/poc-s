@@ -15,12 +15,13 @@ export const NewNotesForm = () => {
         }}
       />
       <button
+        style={{ marginLeft: "5px" }}
         onClick={() => {
           notesStore.addNote(noteText);
           setNoteText("");
         }}
       >
-        Add note
+        Add
       </button>
     </React.Fragment>
   );
