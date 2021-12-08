@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.josinho.rest.services.modals.User;
+import com.josinho.rest.services.repository.UserRepository;
 
 @Component
 public class UserDaoService {
+	@Autowired
+	private UserRepository userRepository;
+	
 	private static List<User> users = new ArrayList<>();
 	private static int usersCount = 3;
 
@@ -21,7 +27,7 @@ public class UserDaoService {
 	}
 
 	public List<User> findAll() {
-		return users;
+		return userRepository.findAll();
 	}
 
 	public User save(User user) {
@@ -33,13 +39,8 @@ public class UserDaoService {
 	}
 
 	public User findOne(int id) {
-		for (User user : users) {
-			if (user.getId() == id) {
-				return user;
-			}
-		}
-
-		return null;
+		Optional<User> user = userRepository.findById(id);
+		return user.get();
 	}
 	
 	public User deleteById(int id) {
