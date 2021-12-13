@@ -1,0 +1,4 @@
+com\josinho\springboot\microservices\App.class
+com\josinho\springboot\microservices\controller\LimitsController.class
+com\josinho\springboot\microservices\configuration\Configuration.class
+com\josinho\springboot\microservices\bean\Limits.class
