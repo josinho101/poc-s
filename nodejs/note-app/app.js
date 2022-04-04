@@ -1,7 +1,7 @@
 const chalk = require("chalk");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
-const { getNotes } = require("./notes");
+const { readNote, addNote, removeNote, listNotes } = require("./notes");
 
 yargs(hideBin(process.argv))
   .command({
@@ -19,29 +19,43 @@ yargs(hideBin(process.argv))
         type: "string",
       },
     },
-    handler: function (argv) {
-      console.log(`Title: ${argv.title}, Body: ${argv.body}`);
+    handler(argv) {
+      addNote(argv.title, argv.body);
     },
   })
   .command({
     command: "remove",
     describe: "Remove a note",
-    handler: function () {
-      console.log("Removing a note");
+    builder: {
+      title: {
+        describe: "Note title",
+        demandOption: true,
+        type: "string",
+      },
+    },
+    handler(argv) {
+      removeNote(argv.title);
     },
   })
   .command({
     command: "list",
     describe: "List all notes",
-    handler: function () {
-      console.log("Listing notes");
+    handler() {
+      listNotes();
     },
   })
   .command({
     command: "read",
     describe: "Reading a note",
-    handler: function () {
-      console.log("Reading a note");
+    builder: {
+      title: {
+        describe: "Note title",
+        demandOption: true,
+        type: "string",
+      },
+    },
+    handler(argv) {
+      readNote(argv.title);
     },
   })
   .parse();
