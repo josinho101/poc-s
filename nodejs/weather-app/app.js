@@ -1,17 +1,15 @@
-const axios = require("axios");
+const { forcast } = require("./utils/forcast");
 
-axios.default
-  .get(
-    "http://api.weatherstack.com/current?access_key=89d0b3895084082f2b278ac64810967a&query=Neyyattinkara&units=m"
-  )
-  .then((res) => {
-    if (res.data.error) {
-      console.error("No data available!");
+const location = process.argv[2];
+
+if (!location) {
+  console.log("Please provide a location");
+} else {
+  forcast(location, (error, data) => {
+    if (error) {
+      console.error(error);
     } else {
-      const { temperature, feelslike, weather_descriptions } = res.data.current;
-      console.log(
-        `${weather_descriptions}. It is currently ${temperature} degress out. It feels like ${feelslike} degress out.`
-      );
+      console.log(data);
     }
-  })
-  .catch((error) => console.error("Something gone bad!!" + error));
+  });
+}
