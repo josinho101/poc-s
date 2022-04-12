@@ -6,6 +6,13 @@
   <body>
     {{>header}}
     <p>Welcome to {{name}}</p>
-    <img src="/img/weather.png" />
+    <form>
+      <input type="text" placeholder="Location">
+      <button>Search</button>
+    </form>
+    <p id="message-1"></p>
+    <p id="message-2"></p>
+    <img src="/img/weather.png" />    
+    <script src="/js/weather.js"></script>
   </body>
 </html>

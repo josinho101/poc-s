@@ -2,6 +2,8 @@ const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
 
+const { forcast } = require("./utils/forcast");
+
 const app = express();
 
 app.set("view engine", "hbs");
@@ -32,9 +34,19 @@ app.get("/help", (req, res) => {
 });
 
 app.get("/weather", (req, res) => {
-  res.send({
-    forcast: "It's sunny",
-    location: "India",
+  if (!req.query.address) {
+    return res.send({ error: "You must provide a address to get weather!" });
+  }
+
+  forcast(req.query.address, (error, data) => {
+    if (error) {
+      res.send({ error });
+    } else {
+      res.send({
+        forcast: data,
+        location: req.query.address,
+      });
+    }
   });
 });
 
