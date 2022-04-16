@@ -1,4 +1,5 @@
 const express = require("express");
+const res = require("express/lib/response");
 const User = require("../models/user");
 
 const router = new express.Router();
@@ -7,9 +8,21 @@ router.post("/users", async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
-    return res.status(201).send(user);
+    const token = await user.generateAuthToken();
+    res.status(201).send({ user, token });
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+router.post("/users/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findByCredentials(email, password);
+    const token = await user.generateAuthToken();
+    res.send({ user, token });
+  } catch (e) {
+    res.status(400).send();
   }
 });
 
@@ -46,10 +59,10 @@ router.patch("/users/:id", async (req, res) => {
     }
 
     const _id = req.params.id;
-    const user = await User.findByIdAndUpdate(_id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const user = await User.findById(_id);
+
+    updates.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
 
     if (!user) {
       return res.status(404).send("User not found!");
