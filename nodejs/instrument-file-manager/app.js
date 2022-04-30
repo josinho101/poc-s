@@ -20,8 +20,9 @@ mongoose
 
     for (let i = 0; i < fileCount; i++) {
       const instrumentId = getRandom(1, 5);
-      const filename = `${uuidv4()}.${exts[instrumentId - 1]}`;
-      const file = new File({ instrumentId, filename });
+      const ext = exts[instrumentId - 1];
+      const filename = `${uuidv4()}.${ext}`;
+      const file = new File({ instrumentId, filename, ext });
       files.push(file);
     }
 
