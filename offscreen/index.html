@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Offscreen Canvas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .canvas {
+        border: 1px solid grey;
+        margin-right: 3rem;
+        margin-bottom: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Offscreen canvas sample</h3>
+    <div>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+      <canvas id="canvas" class="canvas" height="400" width="400"></canvas>
+    </div>
+    <script>
+      const plots = document.querySelectorAll(".canvas");
+      const min = 50000;
+      const max = 100000;
+      for (let i = 0; i < plots.length; i++) {
+        const canvas = plots[i];
+        const count = Math.floor(Math.random() * (max - min) + min);
+        const offscreenCanvas = canvas.transferControlToOffscreen();
+        const worker = new Worker("worker.js");
+        worker.postMessage(
+          { msg: "offscreen", canvas: offscreenCanvas, id: i + 1, count },
+          [offscreenCanvas]
+        );
+      }
+    </script>
+  </body>
+</html>
