@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL Circle</title>
+    <meta charset="UTF-8" />
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script type="module">
+      import { initShaderProgram } from "./init-shader.js";
+      const gl = document.getElementById("canvas").getContext("webgl");
+
+      // Define the vertices of the circle
+      const vertices = [];
+      const center = [0, 0];
+      const radius = 0.5;
+      const segments = 50;
+      const angleStep = (2 * Math.PI) / segments;
+      for (let i = 0; i <= segments; i++) {
+        const angle = i * angleStep;
+        const x = center[0] + radius * Math.cos(angle);
+        const y = center[1] + radius * Math.sin(angle);
+        vertices.push(x, y);
+      }
+
+      // Create the vertex buffer and store the vertices in it
+      const vertexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(vertices),
+        gl.STATIC_DRAW
+      );
+
+      // Create the shader program
+      const vertexShaderSource = `
+        attribute vec2 aVertexPosition;
+        void main() {
+          gl_Position = vec4(aVertexPosition, 0, 1);
+        }`;
+      const fragmentShaderSource = `
+        precision mediump float;
+        void main() {
+          gl_FragColor = vec4(1, 0, 0, 1);
+        }`;
+      const shaderProgram = initShaderProgram(
+        gl,
+        vertexShaderSource,
+        fragmentShaderSource
+      );
+      const programInfo = {
+        program: shaderProgram,
+        attribLocations: {
+          vertexPosition: gl.getAttribLocation(
+            shaderProgram,
+            "aVertexPosition"
+          ),
+        },
+        uniformLocations: {},
+      };
+
+      // Draw the circle
+      gl.useProgram(programInfo.program);
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.vertexAttribPointer(
+        programInfo.attribLocations.vertexPosition,
+        2, // size (2 components per iteration)
+        gl.FLOAT, // type of the data
+        false, // normalize
+        0, // stride (0 = move forward size * sizeof(type) each iteration to get the next position)
+        0 // start at the beginning of the buffer
+      );
+      gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+      gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length / 2);
+    </script>
+  </body>
+</html>
