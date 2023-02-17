@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mouse Wheel Zoom in WebGL</title>
+  </head>
+  <body>
+    <p>Use mouse wheel to zoom in and out</p>
+    <canvas id="myCanvas" width="800" height="800"></canvas>
+    <script>
+      var canvas = document.getElementById("myCanvas");
+      var gl = canvas.getContext("webgl");
+
+      // Define the vertices of the triangle
+      var vertices = [-0.5, -0.5, 0.5, -0.5, 0.0, 0.5];
+
+      // Create a buffer for the vertices
+      var vertexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(vertices),
+        gl.STATIC_DRAW
+      );
+
+      // Create a vertex shader
+      var vertexShaderSource = `
+            attribute vec2 a_position;
+            uniform float u_scale;
+            void main() {
+                gl_Position = vec4(a_position * u_scale, 0.0, 1.0);
+            }
+        `;
+      var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vertexShader, vertexShaderSource);
+      gl.compileShader(vertexShader);
+
+      // Create a fragment shader
+      var fragmentShaderSource = `
+            precision mediump float;
+            void main() {
+                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+            }
+        `;
+      var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fragmentShader, fragmentShaderSource);
+      gl.compileShader(fragmentShader);
+
+      // Create a shader program
+      var shaderProgram = gl.createProgram();
+      gl.attachShader(shaderProgram, vertexShader);
+      gl.attachShader(shaderProgram, fragmentShader);
+      gl.linkProgram(shaderProgram);
+
+      // Get the location of the attribute and uniform variables in the shaders
+      var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
+      var scaleLocation = gl.getUniformLocation(shaderProgram, "u_scale");
+
+      // Enable the attribute variable
+      gl.enableVertexAttribArray(positionLocation);
+
+      // Bind the vertex buffer to the attribute variable
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+      // Set the clear color to black
+      gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+      gl.useProgram(shaderProgram);
+
+      // Initialize the scale factor to 1.0
+      var scale = 1.0;
+
+      // Add a listener for the mouse wheel event
+      canvas.addEventListener("wheel", function (event) {
+        // Increase or decrease the scale factor based on the direction of the mouse wheel
+        scale += event.deltaY > 0 ? -0.1 : 0.1;
+      });
+
+      // Render the triangle
+      function render() {
+        // Set the scale uniform variable in the shader program
+        gl.uniform1f(scaleLocation, scale);
+
+        // Clear the canvas
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        // Draw the triangle
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+        // Request another frame
+        requestAnimationFrame(render);
+      }
+
+      // Start rendering
+      requestAnimationFrame(render);
+    </script>
+  </body>
+</html>

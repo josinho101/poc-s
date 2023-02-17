@@ -1,5 +1,6 @@
 const canvas = document.getElementById("canvas");
 const gl = canvas.getContext("webgl");
+const { mat4 } = glMatrix;
 
 if (!gl) {
   console.error("WebGL not supported!!");
@@ -24,9 +25,11 @@ gl.shaderSource(
     attribute vec3 position;
     attribute vec3 color;
     varying vec3 vColor;
+    uniform mat4 matrix;
+
     void main() {
       vColor = color;
-      gl_Position = vec4(position, 1);
+      gl_Position = matrix * vec4(position, 1);
     }
   `
 );
@@ -62,4 +65,15 @@ gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
 gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, 0, 0);
 
 gl.useProgram(program);
-gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+const uniformLocation = {
+  matrix: gl.getUniformLocation(program, "matrix"),
+};
+
+const matrix = mat4.create();
+mat4.translate(matrix, matrix, [0.5, 0.5, 0]);
+mat4.scale(matrix, matrix, [0.5, 0.5, 0]);
+
+gl.uniformMatrix4fv(uniformLocation.matrix, false, matrix);
+
+gl.drawArrays(gl.TRIANGLES, 0, vertexData.length / 3);
