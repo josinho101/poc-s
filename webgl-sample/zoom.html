@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mouse Wheel Zoom in WebGL</title>
+    <title>Mouse Wheel Zoom and Pan</title>
   </head>
   <body>
     <h2>Use mouse to pan and zoom</h2>
@@ -10,7 +10,18 @@
       var canvas = document.getElementById("myCanvas");
       var gl = canvas.getContext("webgl");
 
-      var vertices = [-0.5, -0.5, 0.5, -0.5, 0.0, 0.5];
+      var vertices = [];
+      const center = [0, 0];
+      const radius = 0.5;
+      const segments = 500;
+      const angleStep = (2 * Math.PI) / segments;
+      for (let i = 0; i <= segments; i++) {
+        const angle = i * angleStep;
+        const x = center[0] + radius * Math.cos(angle);
+        const y = center[1] + radius * Math.sin(angle);
+        vertices.push(x, y);
+      }
+
       var vertexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
       gl.bufferData(
@@ -97,7 +108,7 @@
         gl.uniform2fv(translationLocation, translation);
 
         gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length / 2);
         requestAnimationFrame(render);
       }
 
