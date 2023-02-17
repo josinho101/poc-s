@@ -70,7 +70,6 @@
       gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
       gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
       gl.useProgram(shaderProgram);
 
       var scale = 1.0;
@@ -92,8 +91,8 @@
         if (isPanning) {
           var deltaX = e.clientX - lastMousePosition[0];
           var deltaY = e.clientY - lastMousePosition[1];
-          translation[0] += (deltaX * 2.0) / canvas.width;
-          translation[1] -= (deltaY * 2.0) / canvas.height;
+          translation[0] += (deltaX * 2.0) / canvas.width / scale;
+          translation[1] -= (deltaY * 2.0) / canvas.height / scale;
           lastMousePosition = [e.clientX, e.clientY];
         }
       });
