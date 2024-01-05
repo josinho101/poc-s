@@ -7,6 +7,7 @@ export interface Product {
   type: string;
   manufacturer: string;
   title: string;
+  image: string;
 }
 
 export const ProductRequest = z.object({
@@ -30,5 +31,9 @@ export const ProductRequest = z.object({
   title: z.string({
     required_error: "title is required",
     invalid_type_error: "title must be a string",
+  }),
+  image: z.string({
+    required_error: "image url is required",
+    invalid_type_error: "image url must be a string",
   }),
 });
